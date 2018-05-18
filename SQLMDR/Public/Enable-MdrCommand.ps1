@@ -9,6 +9,6 @@ function Enable-MdrCommand {
     )
 
     process {
-
+        Set-MdrCommand @PSBoundParameters -Enable
     }
 }
