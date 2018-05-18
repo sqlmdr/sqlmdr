@@ -6,7 +6,9 @@ function Get-MdrCommand {
         [string[]] $Name,
 
         [ValidateSet('Server', 'Instance', 'Database')]
-        [string] $Category
+        [string] $Category,
+
+        [switch] $Enabled
     )
 
     process {
@@ -20,7 +22,7 @@ function Get-MdrCommand {
         }
 
         if ($Module) {
-            $registeredCommands = $registeredCommands | Where-Object { $_.Module -eq $Module }
+            $registeredCommands = $registeredCommands | Where-Object { $_.Module -in $Module }
         }
 
         if ($Name) {
@@ -28,7 +30,11 @@ function Get-MdrCommand {
         }
 
         if ($Category) {
-            $registeredCommands = $registeredCommands | Where-Object { $_.Category -eq $Category }
+            $registeredCommands = $registeredCommands | Where-Object { $_.Category -in $Category }
+        }
+
+        if ($PSBoundParameters.ContainsKey('Enabled')) {
+            $registeredCommands = $registeredCommands | Where-Object { $_.Enabled -eq $Enabled }
         }
 
         return $registeredCommands
