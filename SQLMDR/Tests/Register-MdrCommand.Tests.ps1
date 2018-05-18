@@ -101,6 +101,22 @@ Describe 'Register-MdrCommand Tests' {
             $registeredCommand | Should -Not -BeNullOrEmpty
         }
 
+        It 'Registers in a disabled state' {
+            $script:PesterPSFConfig = $null
+
+            $commandName = 'Get-ChildItem'
+            $null = Register-MdrCommand -Name $commandName -Category 'Server' -Disable
+
+            Assert-MockCalled -CommandName 'Get-PSFConfig'
+            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+            $registeredCommand = Get-PSFConfig -FullName 'sqlmdr.commands'
+            Assert-MockCalled -CommandName 'Get-PSFConfig'
+            $registeredCommand = $registeredCommand.Value
+
+            $registeredCommand.Enabled | Should -Be $false
+        }
+
         It 'Prevents registering the same command multiple times' {
             $script:PesterPSFConfig = $null
 

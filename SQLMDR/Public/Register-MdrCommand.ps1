@@ -52,11 +52,17 @@ function Register-MdrCommand {
         # create the registered command objects
         $newRegisteredCommands = @()
         foreach ($command in $commands) {
+            if ($Disable.IsPresent) {
+                $enabled = $false
+            } else {
+                $enabled = $true
+            }
+
             $newRegisteredCommands += [PSCustomObject] @{
                 Module = $command.Module.Name
                 Name = $command.Name
                 Category = $Category
-                Enabled = (-not $Disable.IsPresent)
+                Enabled = $enabled
             }
         }
 
