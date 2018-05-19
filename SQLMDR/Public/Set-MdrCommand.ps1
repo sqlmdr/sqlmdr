@@ -48,9 +48,6 @@ function Set-MdrCommand {
             }
         }
 
-        $command | ogv
-        $registeredCommands | ogv
-
         Set-PSFConfig -FullName 'sqlmdr.commands' -Value $registeredCommands
     }
 }

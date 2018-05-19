@@ -4,61 +4,41 @@ Import-Module -FullyQualifiedName $moduleManifestPath -Force
 
 Describe 'Set-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
-        # WE NEED TO GENERATE THIS, DON'T JUST RETURN STATIC STUFF ALL THE TIME
-        Mock -CommandName 'Get-PSFConfig' {
-            return [PSCustomObject] @{
-                FullName = 'sqlmdr.commands'
-                Value = @(
-                    [PSCustomObject] @{
-                        Module = 'Module1'
-                        Name = 'ServerCommand1'
-                        Category = 'Server'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module1'
-                        Name = 'ServerCommand2'
-                        Category = 'Server'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module1'
-                        Name = 'InstanceCommand1'
-                        Category = 'Instance'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module2'
-                        Name = 'DatabaseCommand1'
-                        Category = 'Database'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module2'
-                        Name = 'DisabledCommand1'
-                        Category = 'Server'
-                        Enabled = $false
-                    }
-                )
-                Description = ''
-            }
-        }
+        . .\Mocks.ps1
 
-        Mock -CommandName 'Set-PSFConfig' {
-            if (-not $script:PesterPSFConfig) {
-                $script:PesterPSFConfig = @{}
+        $commands = @(
+            [PSCustomObject] @{
+                Module = 'Module1'
+                Name = 'ServerCommand1'
+                Category = 'Server'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module1'
+                Name = 'ServerCommand2'
+                Category = 'Server'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module1'
+                Name = 'InstanceCommand1'
+                Category = 'Instance'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module2'
+                Name = 'DatabaseCommand1'
+                Category = 'Database'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module2'
+                Name = 'DisabledCommand1'
+                Category = 'Server'
+                Enabled = $false
             }
-
-            if (-not $script:PesterPSFConfig.ContainsKey($FullName)) {
-                $script:PesterPSFConfig[$FullName] = [PSCustomObject] @{
-                    FullName = $FullName
-                    Value = @()
-                    Description = ''
-                }
-            }
-
-            $script:PesterPSFConfig[$FullName].Value += $Value
-        }
+        )
+        Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
 
         It 'Sets by module' {
 
@@ -99,7 +79,7 @@ Describe 'Set-MdrCommand Tests' {
 
                 $command = Get-PSFConfig -FullName 'sqlmdr.commands'
                 $command = $command.Value | Where-Object { $_.Name -eq $commandName }
-                $command.Cateogry | Should -Be $categoryName
+                $command.Category | Should -Be $categoryName
             }
         }
 

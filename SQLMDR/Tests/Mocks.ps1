@@ -18,5 +18,5 @@ Mock -CommandName 'Set-PSFConfig' {
         }
     }
 
-    $script:PesterPSFConfig[$FullName].Value += $Value
+    $script:PesterPSFConfig[$FullName].Value = $Value
 }
