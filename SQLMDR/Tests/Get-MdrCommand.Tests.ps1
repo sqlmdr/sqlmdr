@@ -6,41 +6,6 @@ Describe 'Get-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
         . .\Mocks.ps1
 
-        $commands = @(
-            [PSCustomObject] @{
-                Module = 'Module1'
-                Name = 'ServerCommand1'
-                Category = 'Server'
-                Enabled = $true
-            },
-            [PSCustomObject] @{
-                Module = 'Module1'
-                Name = 'ServerCommand2'
-                Category = 'Server'
-                Enabled = $true
-            },
-            [PSCustomObject] @{
-                Module = 'Module1'
-                Name = 'InstanceCommand1'
-                Category = 'Instance'
-                Enabled = $true
-            },
-            [PSCustomObject] @{
-                Module = 'Module2'
-                Name = 'DatabaseCommand1'
-                Category = 'Database'
-                Enabled = $true
-            },
-            [PSCustomObject] @{
-                Module = 'Module2'
-                Name = 'DisabledCommand1'
-                Category = 'Server'
-                Enabled = $false
-            }
-        )
-
-        Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
-
         It 'Filters by module' {
             $commands = Get-MdrCommand -Module 'Module1'
             Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1

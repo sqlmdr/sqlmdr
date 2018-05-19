@@ -20,3 +20,6 @@ Mock -CommandName 'Set-PSFConfig' {
 
     $script:PesterPSFConfig[$FullName].Value = $Value
 }
+
+$mockCommands = Import-PowerShellDataFile -Path .\MockCommands.psd1
+Set-PSFConfig -FullName 'sqlmdr.commands' -Value $mockCommands
