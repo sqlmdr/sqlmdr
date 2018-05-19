@@ -4,44 +4,42 @@ Import-Module -FullyQualifiedName $moduleManifestPath -Force
 
 Describe 'Get-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
-        Mock -CommandName 'Get-PSFConfig' {
-            return [PSCustomObject] @{
-                FullName = 'sqlmdr.commands'
-                Value = @(
-                    [PSCustomObject] @{
-                        Module = 'Module1'
-                        Name = 'ServerCommand1'
-                        Category = 'Server'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module1'
-                        Name = 'ServerCommand2'
-                        Category = 'Server'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module1'
-                        Name = 'InstanceCommand1'
-                        Category = 'Instance'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module2'
-                        Name = 'DatabaseCommand1'
-                        Category = 'Database'
-                        Enabled = $true
-                    },
-                    [PSCustomObject] @{
-                        Module = 'Module2'
-                        Name = 'DisabledCommand1'
-                        Category = 'Server'
-                        Enabled = $false
-                    }
-                )
-                Description = ''
+        . .\Mocks.ps1
+
+        $commands = @(
+            [PSCustomObject] @{
+                Module = 'Module1'
+                Name = 'ServerCommand1'
+                Category = 'Server'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module1'
+                Name = 'ServerCommand2'
+                Category = 'Server'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module1'
+                Name = 'InstanceCommand1'
+                Category = 'Instance'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module2'
+                Name = 'DatabaseCommand1'
+                Category = 'Database'
+                Enabled = $true
+            },
+            [PSCustomObject] @{
+                Module = 'Module2'
+                Name = 'DisabledCommand1'
+                Category = 'Server'
+                Enabled = $false
             }
-        }
+        )
+
+        Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
 
         It 'Filters by module' {
             $commands = Get-MdrCommand -Module 'Module1'
