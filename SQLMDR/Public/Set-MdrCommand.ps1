@@ -7,6 +7,7 @@ function Set-MdrCommand {
         [Parameter()]
         [string[]] $Name,
 
+        [ValidateSet('Server', 'Database', 'Instance')]
         [string] $Category,
 
         [switch] $Enable,
@@ -27,6 +28,9 @@ function Set-MdrCommand {
         }
 
         $updatedCommands = Get-MdrCommand @params
+        if (-not $updatedCommands) {
+            throw "Command not registered"
+        }
 
         foreach ($updatedCommand in $updatedCommands) {
             $command = $registeredCommands | Where-Object {
