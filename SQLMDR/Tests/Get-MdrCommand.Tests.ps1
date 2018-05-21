@@ -43,6 +43,14 @@ Describe 'Get-MdrCommand Tests' {
             $categories | Should Be $categoryName
         }
 
+        It "Gets by frequency" {
+            $frequencyName = 'Daily'
+            $commands = Get-MdrCommand -Frequency $frequencyName
+            $commands = $commands | Select-Object -ExpandProperty Frequency -Unique
+            $commands.Count | Should -Be 1
+            $commands | Should -Be $frequencyName
+        }
+
         It 'Gets by state (enabled/disabled)' {
             $enabled = $false
             $commands = Get-MdrCommand -Enabled:$enabled

@@ -8,6 +8,9 @@ function Get-MdrCommand {
         [ValidateSet('Server', 'Instance', 'Database')]
         [string] $Category,
 
+        [ValidateSet('Hourly', 'Daily', 'Weekly', 'Monthly')]
+        [string] $Frequency,
+
         [switch] $Enabled
     )
 
@@ -31,6 +34,10 @@ function Get-MdrCommand {
 
         if ($Category) {
             $registeredCommands = $registeredCommands | Where-Object { $_.Category -in $Category }
+        }
+
+        if ($Frequency) {
+            $registeredCommands = $registeredCommands | Where-Object { $_.Frequency -eq $Frequency }
         }
 
         if ($PSBoundParameters.ContainsKey('Enabled')) {

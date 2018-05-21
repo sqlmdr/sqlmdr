@@ -8,6 +8,10 @@ Describe 'Set-MdrCommand Tests' {
             { Set-MdrCommand -Name 'ServerCommand1' -Category 'Module1' } | Should Throw "Cannot validate argument on parameter 'Category'"
         }
 
+        It "Errors when using an invalid frequency" {
+            { Set-MdrCommand -Name 'ServerCommand1' -Frequency 'MadeUpFrequency' } | Should Throw "Cannot validate argument on parameter 'Frequency'"
+        }
+
         It "Errors when command isn't registered" {
             Reset-MockCommands
 
@@ -90,6 +94,89 @@ Describe 'Set-MdrCommand Tests' {
                 $command = Get-PSFConfig -FullName 'sqlmdr.commands'
                 $command = $command.Value | Where-Object { $_.Name -eq $commandName }
                 $command.Category | Should -Be $categoryName
+            }
+
+            It "From pipeline" {
+
+            }
+        }
+
+        Context "Updates frequency" {
+            It "By module" {
+                Reset-MockCommands
+
+                $moduleName = 'Module1'
+                $frequency = 'Monthly'
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1
+                $command = $command.Value | Where-Object { $_.Module -eq $moduleName }
+                $command.Frequency | Should -Not -Be $frequency
+
+                Set-MdrCommand -Module $moduleName -Frequency $frequency
+                Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                $command = $command.Value | Where-Object { $_.Module -eq $moduleName }
+                $command | Select-Object -ExpandProperty Frequency -Unique | Should -Be $frequency
+            }
+
+            It "By name" {
+                Reset-MockCommands
+
+                $commandName = 'ServerCommand1'
+                $frequency = 'Hourly'
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1
+                $command = $command.Value | Where-Object { $_.Name -eq $commandName }
+                $command.Frequency | Should -Not -Be $frequency
+
+                Set-MdrCommand -Name $commandName -Frequency $frequency
+                Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                $command = $command.Value | Where-Object { $_.Name -eq $commandName }
+                $command.Frequency | Should -Be $frequency
+            }
+
+            It "By array of names" {
+                Reset-MockCommands
+
+                $commandName = @('ServerCommand1', 'ServerCommand2')
+                $frequency = 'Monthly'
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1
+                $command = $command.Value | Where-Object { $_.Name -in $commandName }
+                $command.Frequency | Should -Not -Be $frequency
+
+                Set-MdrCommand -Name $commandName -Frequency $frequency
+                Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                $command = $command.Value | Where-Object { $_.Name -in $commandName }
+                $command | Select-Object -ExpandProperty Frequency -Unique | Should -Be $frequency
+            }
+
+            It "By module and name" {
+                Reset-MockCommands
+
+                $moduleName = 'Module1'
+                $commandName = 'ServerCommand1'
+                $frequency = 'Hourly'
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1
+                $command = $command.Value | Where-Object { $_.Module -eq $moduleName -and $_.Name -eq $commandName }
+                $command.Frequency | Should -Not -Be $frequency
+
+                Set-MdrCommand -Module $moduleName -Name $commandName -Frequency $frequency
+                Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+                $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+                $command = $command.Value | Where-Object { $_.Name -eq $commandName }
+                $command.Frequency | Should -Be $frequency
             }
 
             It "From pipeline" {

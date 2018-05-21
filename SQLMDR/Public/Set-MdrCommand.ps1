@@ -10,6 +10,9 @@ function Set-MdrCommand {
         [ValidateSet('Server', 'Database', 'Instance')]
         [string] $Category,
 
+        [ValidateSet('Hourly', 'Daily', 'Weekly', 'Monthly')]
+        [string] $Frequency,
+
         [switch] $Enable,
 
         # parameterset... enable/disable can't be combined
@@ -41,6 +44,10 @@ function Set-MdrCommand {
 
             if ($Category) {
                 $command.Category = $Category
+            }
+
+            if ($Frequency) {
+                $command.Frequency = $Frequency
             }
 
             if ($PSBoundParameters.ContainsKey('Enable')) {

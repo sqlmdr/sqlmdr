@@ -9,7 +9,7 @@ Describe 'Register-MdrCommand Tests' {
 
             $moduleName = 'Microsoft.PowerShell.Management'
             $commands = Get-Command -Module $moduleName
-            $null = Register-MdrCommand -Module $moduleName -Category 'Server'
+            $null = Register-MdrCommand -Module $moduleName -Category 'Server' -Frequency 'Daily'
 
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
@@ -18,7 +18,8 @@ Describe 'Register-MdrCommand Tests' {
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             $registeredCommands = $registeredCommands.Value | Where-Object {
                 $_.Module -eq $moduleName -and
-                $_.Category -eq 'Server'
+                $_.Category -eq 'Server' -and
+                $_.Frequency -eq 'Daily'
             }
 
             $registeredCommands.Count | Should -BeExactly $commands.Count
@@ -28,23 +29,27 @@ Describe 'Register-MdrCommand Tests' {
             $script:PesterPSFConfig = $null
 
             $commandName = 'Get-ChildItem'
-            $null = Register-MdrCommand -Name $commandName -Category 'Server'
+            $null = Register-MdrCommand -Name $commandName -Category 'Server' -Frequency 'Daily'
 
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
 
             $registeredCommand = Get-PSFConfig -FullName 'sqlmdr.commands'
             Assert-MockCalled -CommandName 'Get-PSFConfig'
-            $registeredCommand = $registeredCommand.Value
+            $registeredCommand = $registeredCommand.Value | Where-Object {
+                $_.Name -eq $commandName -and
+                $_.Category -eq 'Server' -and
+                $_.Frequency -eq 'Daily'
+            }
 
-            $registeredCommand.Name | Should -BeExactly 'Get-ChildItem'
+            $registeredCommand.Name | Should -BeExactly $commandName
         }
 
         It 'Registers an array of names' {
             $script:PesterPSFConfig = $null
 
             $commands = @('Get-ChildItem', 'Get-Location')
-            $null = Register-MdrCommand -Name $commands -Category 'Server'
+            $null = Register-MdrCommand -Name $commands -Category 'Server' -Frequency 'Daily'
 
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
@@ -53,7 +58,8 @@ Describe 'Register-MdrCommand Tests' {
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             $registeredCommands = $registeredCommands.Value | Where-Object {
                 $_.Name -in $commands -and
-                $_.Category -eq 'Server'
+                $_.Category -eq 'Server' -and
+                $_.Frequency -eq 'Daily'
             }
 
             $registeredCommands.Count | Should -BeExactly 2
@@ -62,7 +68,7 @@ Describe 'Register-MdrCommand Tests' {
         It 'Registers by module and name' {
             $script:PesterPSFConfig = $null
 
-            $null = Register-MdrCommand -Module 'Microsoft.PowerShell.Management' -Name 'Get-ChildItem' -Category 'Server'
+            $null = Register-MdrCommand -Module 'Microsoft.PowerShell.Management' -Name 'Get-ChildItem' -Category 'Server' -Frequency 'Daily'
 
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
@@ -72,7 +78,8 @@ Describe 'Register-MdrCommand Tests' {
             $registeredCommand = $registeredCommands.Value | Where-Object {
                 $_.Module -eq 'Microsoft.PowerShell.Management' -and
                 $_.Name -eq 'Get-ChildItem' -and
-                $_.Category -eq 'Server'
+                $_.Category -eq 'Server' -and
+                $_.Frequency -eq 'Daily'
             }
 
             $registeredCommand | Should -Not -BeNullOrEmpty
@@ -82,14 +89,18 @@ Describe 'Register-MdrCommand Tests' {
             $script:PesterPSFConfig = $null
 
             $commandName = 'Get-ChildItem'
-            $null = Register-MdrCommand -Name $commandName -Category 'Server' -Disable
+            $null = Register-MdrCommand -Name $commandName -Category 'Server' -Frequency 'Daily' -Disable
 
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
 
             $registeredCommand = Get-PSFConfig -FullName 'sqlmdr.commands'
             Assert-MockCalled -CommandName 'Get-PSFConfig'
-            $registeredCommand = $registeredCommand.Value
+            $registeredCommand = $registeredCommand.Value | Where-Object {
+                $_.Name -eq $commandName -and
+                $_.Category -eq 'Server' -and
+                $_.Frequency -eq 'Daily'
+            }
 
             $registeredCommand.Enabled | Should -Be $false
         }
@@ -97,18 +108,18 @@ Describe 'Register-MdrCommand Tests' {
         It 'Prevents registering the same command multiple times' {
             $script:PesterPSFConfig = $null
 
-            Register-MdrCommand -Module 'Microsoft.PowerShell.Management' -Name 'Get-ChildItem' -Category 'Server'
+            Register-MdrCommand -Module 'Microsoft.PowerShell.Management' -Name 'Get-ChildItem' -Category 'Server' -Frequency 'Daily'
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
             Assert-MockCalled -CommandName 'Get-PSFConfig'
-            { Register-MdrCommand -Module 'Microsoft.PowerShell.Management' -Name 'Get-ChildItem' -Category 'Server' } | Should Throw
+            { Register-MdrCommand -Module 'Microsoft.PowerShell.Management' -Name 'Get-ChildItem' -Category 'Server' -Frequency 'Daily' } | Should Throw
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
             Assert-MockCalled -CommandName 'Get-PSFConfig'
         }
 
-        It 'Presents registering unknown commands' {
+        It 'Prevents registering unknown commands' {
             $script:PesterPSFConfig = $null
 
-            { Register-MdrCommand -Name 'Get-UnknownCommandIMadeUp' -Category 'Server' } | Should Throw 'Unknown command'
+            { Register-MdrCommand -Name 'Get-UnknownCommandIMadeUp' -Category 'Server' -Frequency 'Daily' } | Should Throw 'Unknown command'
         }
 
     }

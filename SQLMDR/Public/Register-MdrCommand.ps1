@@ -5,8 +5,13 @@ function Register-MdrCommand {
 
         [string[]] $Name,
 
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Server', 'Instance', 'Database')]
         [string] $Category,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Hourly', 'Daily', 'Weekly', 'Monthly')]
+        [string] $Frequency,
 
         [switch] $Disable
     )
@@ -62,6 +67,7 @@ function Register-MdrCommand {
                 Module = $command.Module.Name
                 Name = $command.Name
                 Category = $Category
+                Frequency = $Frequency
                 Enabled = $enabled
             }
         }
