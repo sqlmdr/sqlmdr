@@ -22,4 +22,8 @@ Mock -CommandName 'Set-PSFConfig' {
 }
 
 $mockCommands = Import-PowerShellDataFile -Path .\MockCommands.psd1
-Set-PSFConfig -FullName 'sqlmdr.commands' -Value $mockCommands
+$commands = @()
+foreach ($command in $mockCommands.Commands.GetEnumerator()) {
+    $commands += [PSCustomObject] $command
+}
+Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
