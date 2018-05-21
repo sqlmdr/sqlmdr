@@ -5,7 +5,7 @@ function Enable-MdrCommand {
         [string] $Module,
 
         [Parameter()]
-        [string] $Name
+        [string[]] $Name
     )
 
     process {

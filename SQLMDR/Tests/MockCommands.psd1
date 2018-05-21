@@ -31,6 +31,12 @@
             Enabled = $false
         },
         @{
+            Module = 'Module2'
+            Name = 'DisabledCommand2'
+            Category = 'Server'
+            Enabled = $false
+        }
+        @{
             Module = 'DisableByModule'
             Name = 'DisableByModuleCmd1'
             Category = 'Server'
