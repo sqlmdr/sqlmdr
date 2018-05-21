@@ -5,7 +5,7 @@ function Disable-MdrCommand {
         [string] $Module,
 
         [Parameter()]
-        [string] $Name
+        [string[]] $Name
     )
 
     process {
