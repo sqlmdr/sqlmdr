@@ -1,6 +1,4 @@
-$moduleManifestName = 'SQLMDR.psd1'
-$moduleManifestPath = "$PSScriptRoot\..\$moduleManifestName"
-Import-Module -FullyQualifiedName $moduleManifestPath -Force
+. .\Header.ps1
 
 Describe 'Get-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {

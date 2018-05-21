@@ -1,5 +1,4 @@
-$ModuleManifestName = 'SQLMDR.psd1'
-$ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
+. .\Header.ps1
 
 Describe 'Enable-MdrCommand Tests' {
     It 'Enables by module' {
