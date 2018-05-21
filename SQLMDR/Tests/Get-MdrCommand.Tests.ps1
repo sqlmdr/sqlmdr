@@ -11,14 +11,6 @@ Describe 'Get-MdrCommand Tests' {
             $modules.Count | Should -Be 1
         }
 
-        It 'Filters by an array of modules' {
-            $moduleNames = @('Module1', 'Module2')
-            $commands = Get-MdrCommand -Module $moduleName
-            Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1
-            $modules = $commands | Select-Object -ExpandProperty Module -Unique
-            $modules.Count | Should -Be $moduleNames.Count
-        }
-
         It 'Gets by name' {
             $commandName = 'ServerCommand1'
             $commands = Get-MdrCommand -Name $commandName
