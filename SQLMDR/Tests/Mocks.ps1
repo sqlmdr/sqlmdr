@@ -21,9 +21,13 @@ Mock -CommandName 'Set-PSFConfig' {
     $script:PesterPSFConfig[$FullName].Value = $Value
 }
 
-$mockCommands = Import-PowerShellDataFile -Path .\MockCommands.psd1
-$commands = @()
-foreach ($command in $mockCommands.Commands.GetEnumerator()) {
-    $commands += [PSCustomObject] $command
+function Reset-MockCommands {
+    $mockCommands = Import-PowerShellDataFile -Path .\MockCommands.psd1
+    $commands = @()
+    foreach ($command in $mockCommands.Commands.GetEnumerator()) {
+        $commands += [PSCustomObject] $command
+    }
+    Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
 }
-Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
+
+Reset-MockCommands
