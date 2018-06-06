@@ -1,8 +1,8 @@
-. .\Header.ps1
+. "$PSScriptRoot\Header.ps1"
 
 Describe 'Get-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
-        . .\Mocks.ps1
+        . "$PSScriptRoot\Mocks.ps1"
 
         It 'Filters by module' {
             $commands = Get-MdrCommand -Module 'Module1'

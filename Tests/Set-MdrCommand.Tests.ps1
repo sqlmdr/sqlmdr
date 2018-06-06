@@ -1,8 +1,12 @@
-. .\Header.ps1
+. "$PSScriptRoot\Header.ps1"
 
 Describe 'Set-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
-        . .\Mocks.ps1
+        . "$PSScriptRoot\Mocks.ps1"
+
+        It "Prevents using enable and disable at the same time" {
+            { Set-MdrCommand -Name 'ServerCommand1' -Category 'Database' -Enable -Disable } | Should Throw
+        }
 
         It "Errors when using an invalid category" {
             { Set-MdrCommand -Name 'ServerCommand1' -Category 'Module1' } | Should Throw "Cannot validate argument on parameter 'Category'"

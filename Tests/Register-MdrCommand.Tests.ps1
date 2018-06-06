@@ -1,8 +1,8 @@
-. .\Header.ps1
+. "$PSScriptRoot\Header.ps1"
 
 Describe 'Register-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
-        . .\Mocks.ps1
+        . "$PSScriptRoot\Mocks.ps1"
 
         It 'Registers by module' {
             $script:PesterPSFConfig = $null

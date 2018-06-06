@@ -1,77 +1,75 @@
-. .\Header.ps1
+. "$PSScriptRoot\Header.ps1"
 
-Describe 'Enable-MdrCommand Tests' {
+Describe 'Disable-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
-        . .\Mocks.ps1
+        . "$PSScriptRoot\Mocks.ps1"
 
-        It 'Enables by module' {
-            $moduleName = 'Module2'
+        It 'Disables by module' {
+            $moduleName = 'DisableByModule'
 
-            $command = Get-PSFConfig -FullName 'sqlmdr.commands'
-            $command = $command.Value | Where-Object { $_.Module -eq $moduleName }
-            $command | Select-Object -ExpandProperty Enabled -Unique | Should -Not -Be $true
-
-            Enable-MdrCommand -Module $moduleName
+            Disable-MdrCommand -Module $moduleName
             Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
 
             $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+            Assert-MockCalled -CommandName 'Get-PSFConfig' -Times 1
+
             $command = $command.Value | Where-Object { $_.Module -eq $moduleName }
-            $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $true
+            $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $false
         }
 
-        It 'Enables by name' {
+        It 'Disables by name' {
             Reset-MockCommands
 
-            $commandName = 'DisabledCommand1'
-
-            $command = Get-PSFConfig -FullName 'sqlmdr.commands'
-            $command = $command.Value | Where-Object { $_.Name -eq $commandName }
-            $command.Enabled | Should -Be $false
-
-            Enable-MdrCommand -Name $commandName
-            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+            $commandName = 'ServerCommand1'
 
             $command = Get-PSFConfig -FullName 'sqlmdr.commands'
             $command = $command.Value | Where-Object { $_.Name -eq $commandName }
             $command.Enabled | Should -Be $true
-        }
 
-        It 'Enables an array of names' {
-            Reset-MockCommands
-
-            $commandName = @('DisabledCommand1', 'DisabledCommand2')
+            Disable-MdrCommand -Name $commandName
+            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
 
             $command = Get-PSFConfig -FullName 'sqlmdr.commands'
-            $command = $command.Value | Where-Object { $_.Name -in $commandName }
-            $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $false
+            $command = $command.Value | Where-Object { $_.Name -eq $commandName }
+            $command.Enabled | Should -Be $false
+        }
 
-            Enable-MdrCommand -Name $commandName
-            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+        It 'Disables an array of names' {
+            Reset-MockCommands
+
+            $commandName = @('ServerCommand1', 'ServerCommand2')
 
             $command = Get-PSFConfig -FullName 'sqlmdr.commands'
             $command = $command.Value | Where-Object { $_.Name -in $commandName }
             $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $true
-        }
 
-        It 'Enables by module and name' {
-            Reset-MockCommands
-
-            $moduleName = 'Module2'
-            $commandName = 'DisabledCommand1'
+            Disable-MdrCommand -Name $commandName
+            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
 
             $command = Get-PSFConfig -FullName 'sqlmdr.commands'
-            $command = $command.Value | Where-Object { $_.Module -eq $moduleName -and $_.Name -eq $commandName }
+            $command = $command.Value | Where-Object { $_.Name -in $commandName }
             $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $false
+        }
 
-            Enable-MdrCommand -Module $moduleName -Name $commandName
-            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+        It 'Disables by module and name' {
+            Reset-MockCommands
+
+            $moduleName = 'Module1'
+            $commandName = 'ServerCommand1'
 
             $command = Get-PSFConfig -FullName 'sqlmdr.commands'
             $command = $command.Value | Where-Object { $_.Module -eq $moduleName -and $_.Name -eq $commandName }
             $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $true
+
+            Disable-MdrCommand -Module $moduleName -Name $commandName
+            Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+            $command = Get-PSFConfig -FullName 'sqlmdr.commands'
+            $command = $command.Value | Where-Object { $_.Module -eq $moduleName -and $_.Name -eq $commandName }
+            $command | Select-Object -ExpandProperty Enabled -Unique | Should -Be $false
         }
 
-        It 'Enables by pipeline from Get-MdrCommand' {
+        It 'Disables by pipeline from Get-MdrCommand' {
 
         }
     }

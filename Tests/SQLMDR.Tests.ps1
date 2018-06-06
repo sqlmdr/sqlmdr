@@ -1,4 +1,5 @@
-$ModuleManifestName = 'SQLMDR.psd1'
+$ModuleName = 'SQLMDR'
+$ModuleManifestName = 'SQLMDR\SQLMDR.psd1'
 $ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
 
 Describe 'Module Manifest Tests' {
@@ -6,8 +7,8 @@ Describe 'Module Manifest Tests' {
         Set-StrictMode -Version 3.0
 
         It 'Should load' {
-            $Module = Get-Module $ENV:BHProjectName
-            $Module.Name | Should be $ENV:BHProjectName
+            $Module = Get-Module $ModuleName
+            $Module.Name | Should be $ModuleName
         }
     }
 

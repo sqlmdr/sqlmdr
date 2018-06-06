@@ -9,89 +9,118 @@
 {
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
-	"version": "2.0.0",
-
+    "version": "0.1.0",
+    "runner": "terminal",
     // Start PowerShell
     "windows": {
-        "command": "${env:windir}/System32/WindowsPowerShell/v1.0/powershell.exe",
-        //"command": "${env:ProgramFiles}/PowerShell/6.0.0/powershell.exe",
-        "args": [ "-NoProfile", "-ExecutionPolicy", "Bypass" ]
+    //  "command": "C:\\WINDOWS\\Sysnative\\WindowsPowerShell\\v1.0\\powershell.exe"
+    "command": "powershell.exe"
     },
-    "linux": {
-        "command": "/usr/bin/powershell",
-        "args": [ "-NoProfile" ]
-    },
-    "osx": {
-        "command": "/usr/local/bin/powershell",
-        "args": [ "-NoProfile" ]
-    },
-
+//  "linux": {
+//      "command": "/usr/bin/powershell"
+//  },
+//  "osx": {
+//      "command": "/usr/local/bin/powershell"
+//  },
+    // The command is a shell script
+    "isShellCommand": true,
+    // Show the output window always
+    "showOutput": "always",
+    "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass"
+    ],
     // Associate with test task runner
     "tasks": [
         {
-            "taskName": "Test",
+            "taskName": "Run.AllTest",
             "suppressTaskName": true,
-            "isTestCommand": true,
+            "isTestCommand": false,
+            "showOutput": "always",
             "args": [
-                "Write-Host 'Invoking Pester...'; $ProgressPreference = 'SilentlyContinue'; Invoke-Pester -Script Tests -PesterOption @{IncludeVSCodeMarker=$true};",
+                "Invoke-Pester -PesterOption @{IncludeVSCodeMarker=$true};",
                 "Invoke-Command { Write-Host 'Completed Test task in task runner.' }"
             ],
-            "problemMatcher": "$pester"
-        },
-        {
-            "taskName": "Clean",
-            "suppressTaskName": true,
-            "showOutput": "always",
-            "args": [
-                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Clean'; Invoke-psake build.psake.ps1 -taskList Clean;",
-                "Invoke-Command { Write-Host 'Completed Clean task in task runner.' }"
+            "problemMatcher": [
+                {
+                    "owner": "powershell",
+                    "fileLocation": [
+                        "absolute"
+                    ],
+                    "severity": "error",
+                    "pattern": [
+                        {
+                            "regexp": "^\\s*(\\[-\\]\\s*.*?)(\\d+)ms\\s*$",
+                            "message": 1
+                        },
+                        {
+                            "regexp": "^\\s+at\\s+[^,]+,\\s*(.*?):\\s+line\\s+(\\d+)$",
+                            "file": 1,
+                            "line": 2
+                        }
+                    ]
+                }
             ]
         },
         {
-            "taskName": "Build",
+            "taskName": "Run.IntegrationTests",
             "suppressTaskName": true,
-            "isBuildCommand": true,
+            "isTestCommand": false,
             "showOutput": "always",
             "args": [
-                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Build'; Invoke-psake build.psake.ps1 -taskList Build;",
-                "Invoke-Command { Write-Host 'Completed Build task in task runner.' }"
+                "Invoke-Pester -PesterOption @{IncludeVSCodeMarker=$true} -Tag 'Integrationtests';",
+                "Invoke-Command { Write-Host 'Completed Test task in task runner.' }"
+            ],
+            "problemMatcher": [
+                {
+                    "owner": "powershell",
+                    "fileLocation": [
+                        "absolute"
+                    ],
+                    "severity": "error",
+                    "pattern": [
+                        {
+                            "regexp": "^\\s*(\\[-\\]\\s*.*?)(\\d+)ms\\s*$",
+                            "message": 1
+                        },
+                        {
+                            "regexp": "^\\s+at\\s+[^,]+,\\s*(.*?):\\s+line\\s+(\\d+)$",
+                            "file": 1,
+                            "line": 2
+                        }
+                    ]
+                }
             ]
         },
         {
-            "taskName": "BuildHelp",
+            "taskName": "Run.CurrentFile",
             "suppressTaskName": true,
+            "isTestCommand": true,
             "showOutput": "always",
             "args": [
-                "Write-Host 'Invoking psake on build.psake.ps1 -taskList BuildHelp'; Invoke-psake build.psake.ps1 -taskList BuildHelp;",
-                "Invoke-Command { Write-Host 'Completed BuildHelp task in task runner.' }"
-            ]
-        },
-        {
-            "taskName": "Analyze",
-            "suppressTaskName": true,
-            "showOutput": "always",
-            "args": [
-                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Analyze'; Invoke-psake build.psake.ps1 -taskList Analyze;",
-                "Invoke-Command { Write-Host 'Completed Analyze task in task runner.' }"
-            ]
-        },
-        {
-            "taskName": "Install",
-            "suppressTaskName": true,
-            "showOutput": "always",
-            "args": [
-                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Install'; Invoke-psake build.psake.ps1 -taskList Install;",
-                "Invoke-Command { Write-Host 'Completed Install task in task runner.' }"
-            ]
-        },
-        {
-            "taskName": "Publish",
-            "suppressTaskName": true,
-            "showOutput": "always",
-            "args": [
-                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Publish'; Invoke-psake build.psake.ps1 -taskList Publish;",
-                "Invoke-Command { Write-Host 'Completed Publish task in task runner.' }"
+                "Invoke-Pester -PesterOption @{IncludeVSCodeMarker=$true} -Script '${workspaceRoot}/Tests/${fileBasenameNoExtension}.Tests.ps1';"
+            ],
+            "problemMatcher": [
+                {
+                    "owner": "powershell",
+                    "fileLocation": [
+                        "absolute"
+                    ],
+                    "severity": "error",
+                    "pattern": [
+                        {
+                            "regexp": "^\\s*(\\[-\\]\\s*.*?)(\\d+)ms\\s*$",
+                            "message": 1
+                        },
+                        {
+                            "regexp": "^\\s+at\\s+[^,]+,\\s*(.*?):\\s+line\\s+(\\d+)$",
+                            "file": 1,
+                            "line": 2
+                        }
+                    ]
+                }
             ]
         }
-	]
+    ]
 }
