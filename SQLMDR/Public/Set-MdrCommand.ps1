@@ -1,3 +1,34 @@
+<#
+.SYNOPSIS
+Updates settings for a registered command.
+
+.DESCRIPTION
+Updates settings for a command that has been previously registered with SQLMDR.
+
+.PARAMETER Module
+Enter the name of a module or snap-in.
+
+.PARAMETER Name
+Enter a name.
+
+.PARAMETER Category
+Parameter description
+
+.PARAMETER Frequency
+Parameter description
+
+.PARAMETER Enable
+Parameter description
+
+.PARAMETER Disable
+Parameter description
+
+.EXAMPLE
+An example
+
+.NOTES
+General notes
+#>
 function Set-MdrCommand {
     [CmdletBinding()]
     param (

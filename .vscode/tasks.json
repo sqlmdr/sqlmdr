@@ -33,10 +33,65 @@
             "suppressTaskName": true,
             "isTestCommand": true,
             "args": [
-                "Write-Host 'Invoking Pester...'; $ProgressPreference = 'SilentlyContinue'; Invoke-Pester -Script test -PesterOption @{IncludeVSCodeMarker=$true};",
+                "Write-Host 'Invoking Pester...'; $ProgressPreference = 'SilentlyContinue'; Invoke-Pester -Script Tests -PesterOption @{IncludeVSCodeMarker=$true};",
                 "Invoke-Command { Write-Host 'Completed Test task in task runner.' }"
             ],
             "problemMatcher": "$pester"
+        },
+        {
+            "taskName": "Clean",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Clean'; Invoke-psake build.psake.ps1 -taskList Clean;",
+                "Invoke-Command { Write-Host 'Completed Clean task in task runner.' }"
+            ]
+        },
+        {
+            "taskName": "Build",
+            "suppressTaskName": true,
+            "isBuildCommand": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Build'; Invoke-psake build.psake.ps1 -taskList Build;",
+                "Invoke-Command { Write-Host 'Completed Build task in task runner.' }"
+            ]
+        },
+        {
+            "taskName": "BuildHelp",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'Invoking psake on build.psake.ps1 -taskList BuildHelp'; Invoke-psake build.psake.ps1 -taskList BuildHelp;",
+                "Invoke-Command { Write-Host 'Completed BuildHelp task in task runner.' }"
+            ]
+        },
+        {
+            "taskName": "Analyze",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Analyze'; Invoke-psake build.psake.ps1 -taskList Analyze;",
+                "Invoke-Command { Write-Host 'Completed Analyze task in task runner.' }"
+            ]
+        },
+        {
+            "taskName": "Install",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Install'; Invoke-psake build.psake.ps1 -taskList Install;",
+                "Invoke-Command { Write-Host 'Completed Install task in task runner.' }"
+            ]
+        },
+        {
+            "taskName": "Publish",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'Invoking psake on build.psake.ps1 -taskList Publish'; Invoke-psake build.psake.ps1 -taskList Publish;",
+                "Invoke-Command { Write-Host 'Completed Publish task in task runner.' }"
+            ]
         }
 	]
 }
