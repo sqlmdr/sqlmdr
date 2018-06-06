@@ -30,7 +30,7 @@ An example
 General notes
 #>
 function Set-MdrCommand {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'EnableCommand')]
     param (
         [Parameter()]
         [string] $Module,
@@ -38,15 +38,18 @@ function Set-MdrCommand {
         [Parameter()]
         [string[]] $Name,
 
+        [Parameter()]
         [ValidateSet('Server', 'Database', 'Instance')]
         [string] $Category,
 
+        [Parameter()]
         [ValidateSet('Hourly', 'Daily', 'Weekly', 'Monthly')]
         [string] $Frequency,
 
+        [Parameter(ParameterSetName='EnableCommand')]
         [switch] $Enable,
 
-        # parameterset... enable/disable can't be combined
+        [Parameter(ParameterSetName='DisableCommand')]
         [switch] $Disable
     )
 
