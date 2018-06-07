@@ -1,9 +1,18 @@
 build: false
+
 version: 0.1.{build}
+
+cache:
+  - C:\Program Files\WindowsPowerShell\Modules\PSScriptAnalyzer -> appveyor.yml
+  - C:\Program Files\WindowsPowerShell\Modules\Pester -> appveyor.yml
+  - C:\Program Files\WindowsPowerShell\Modules\PSFramework -> appveyor.yml
+  - C:\Program Files\WindowsPowerShell\Modules\dbatools -> appveyor.yml
 
 before_test:
   - ps: Write-Host -Object "Install Pester" -ForegroundColor DarkGreen
   - ps: Install-Module -Name Pester -Repository PSGallery -Force | Out-Null
+  - ps: Write-Host -Object "Install PSFramework" -ForegroundColor DarkGreen
+  - ps: Install-Module -Name PSFramework -Repository PSGallery -Force | Out-Null
   - ps: Write-Host -Object "Install dbatools" -ForegroundColor DarkGreen
   - ps: Install-Module -Name dbatools -Repository PSGallery -Force | Out-Null
 
