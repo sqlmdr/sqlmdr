@@ -1,8 +1,11 @@
 build: false
+version: 0.1.{build}
 
 before_test:
   - ps: Write-Host -Object "Install Pester" -ForegroundColor DarkGreen
   - ps: Install-Module -Name Pester -Repository PSGallery -Force | Out-Null
+  - ps: Write-Host -Object "Install dbatools" -ForegroundColor DarkGreen
+  - ps: Install-Module -Name dbatools -Repository PSGallery -Force | Out-Null
 
 test_script:
   - ps: $res = Invoke-Pester -Path ".\Tests" -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru
