@@ -9,12 +9,7 @@ cache:
   - C:\Program Files\WindowsPowerShell\Modules\dbatools -> appveyor.yml
 
 before_test:
-  - ps: Write-Host -Object "Install Pester" -ForegroundColor DarkGreen
-  - ps: Install-Module -Name Pester -Repository PSGallery -Force | Out-Null
-  - ps: Write-Host -Object "Install PSFramework" -ForegroundColor DarkGreen
-  - ps: Install-Module -Name PSFramework -Repository PSGallery -Force | Out-Null
-  - ps: Write-Host -Object "Install dbatools" -ForegroundColor DarkGreen
-  - ps: Install-Module -Name dbatools -Repository PSGallery -Force | Out-Null
+  - ps: .\appveyor.setup.ps1
 
 test_script:
   - ps: $res = Invoke-Pester -Path ".\Tests" -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru
