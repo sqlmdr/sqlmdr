@@ -28,6 +28,8 @@ param([switch]$Finalize)
             Write-Host -Object "$requiredModule is cached" -ForegroundColor DarkGreen
             Import-Module -Name $requiredModule -Force
         }
+
+        (Get-Module $requiredModule).Path
     }
 
 #Run a test with the current version of PowerShell
