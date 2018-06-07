@@ -13,3 +13,5 @@ foreach ($requiredModule in $requiredModules) {
         Write-Host -Object "$requiredModule is cached" -ForegroundColor DarkGreen
     }
 }
+
+Set-StrictMode -Version 3.0
