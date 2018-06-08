@@ -1,4 +1,10 @@
-Install-PackageProvider NuGet -Scope CurrentUser -Force
+try {
+    Write-Host -Object "Install NuGet Provider" -ForegroundColor DarkGreen
+    Install-PackageProvider NuGet -Scope CurrentUser -Force
+}
+catch {
+    Write-Error "Failed to install NuGet - $_"
+}
 
 $requiredModules = @(
     'Pester',
@@ -10,11 +16,21 @@ $requiredModules = @(
 foreach ($requiredModule in $requiredModules) {
     $module = Get-Module -Name $requiredModule -ListAvailable
     if (-not $module) {
-        Write-Host -Object "Install $requiredModule" -ForegroundColor DarkGreen
-        Install-Module -Name $requiredModule -Repository PSGallery -Scope CurrentUser -Force | Out-Null
+        try {
+            Write-Host -Object "Install $requiredModule" -ForegroundColor DarkGreen
+            Install-Module -Name $requiredModule -Repository PSGallery -Scope CurrentUser -Force | Out-Null
+        }
+        catch {
+            Write-Error "Failed to install $requiredModule - $_"
+        }
     } else {
-        Write-Host -Object "$requiredModule is cached" -ForegroundColor DarkGreen
-        Import-Module -Name $requiredModule -Force
+        try {
+            Write-Host -Object "$requiredModule is cached" -ForegroundColor DarkGreen
+            Import-Module -Name $requiredModule -Force
+        }
+        catch {
+            Write-Error "Failed to import $requiredModule - $_"
+        }
     }
 }
 

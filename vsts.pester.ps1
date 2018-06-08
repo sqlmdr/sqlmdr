@@ -4,10 +4,15 @@ try {
     Write-Output "Installed SQLMDR"
 }
 catch {
-    Write-Error "Failed to Install SQLMDR $($_)"
+    Write-Error "Failed to Import SQLMDR $($_)"
 }
-$TestResults = Invoke-Pester .\Tests -ExcludeTag Integration,IntegrationTests -Show None -OutputFile $(Build.SourcesDirectory)\Test-Pester.XML -OutputFormat NUnitXml -PassThru
 
-if ($TestResults.failedCount -ne 0) {
+$testResults = Invoke-Pester .\Tests `
+    -ExcludeTag Integration,IntegrationTests `
+    -Show None `
+    -OutputFile .\Test-Pester.XML `
+    -OutputFormat NUnitXml `
+    -PassThru
+if ($testResults.failedCount -ne 0) {
     Write-Error "Pester returned errors"
 }
