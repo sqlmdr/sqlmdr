@@ -67,6 +67,7 @@ function Register-MdrCommand {
             }
 
             $command | gm
+            Write-Verbose ('Command Type: ' + $command.GetType())
             Write-Verbose ('Command module: ' + $command.Module)
             Write-Verbose ('Command module name: ' + $command.Module.Name)
 
