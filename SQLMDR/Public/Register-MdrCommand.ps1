@@ -54,6 +54,9 @@ function Register-MdrCommand {
 
         Write-PSFMessage -Level 'Verbose' -Message "Found $($commands.Count) matching commands"
 
+        Write-Verbose ('Commands: ' + $commands.GetType())
+        $commands | gm
+
         # create the registered command objects
         $newRegisteredCommands = @()
         foreach ($command in $commands) {
