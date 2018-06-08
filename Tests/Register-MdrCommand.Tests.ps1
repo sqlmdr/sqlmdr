@@ -18,7 +18,7 @@ Describe 'Register-MdrCommand Tests' {
             $registeredCommands = Get-PSFConfig -FullName 'sqlmdr.commands'
             Assert-MockCalled -CommandName 'Get-PSFConfig'
             Write-Verbose $registeredCommands.Value.Count
-            $registeredCommands.Value | % { Write-Verbose ($_.Name + ':' + $_.Category + ':' + $_.Frequency }
+            $registeredCommands.Value | % { Write-Verbose ($_.Name + ':' + $_.Category + ':' + $_.Frequency) }
             $registeredCommands = $registeredCommands.Value | Where-Object {
                 $_.Module -eq $moduleName -and
                 $_.Category -eq 'Server' -and
