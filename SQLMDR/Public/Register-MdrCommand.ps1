@@ -54,9 +54,6 @@ function Register-MdrCommand {
 
         Write-PSFMessage -Level 'Verbose' -Message "Found $($commands.Count) matching commands"
 
-        Write-Verbose ('Commands: ' + $commands.GetType())
-        $commands | gm
-
         # create the registered command objects
         $newRegisteredCommands = @()
         foreach ($command in $commands) {
@@ -66,14 +63,8 @@ function Register-MdrCommand {
                 $enabled = $true
             }
 
-            $command | gm
-            Write-Verbose ('Command Type: ' + $command.GetType())
-            Write-Verbose ('Command name: ' + $command.Name)
-            Write-Verbose ('Command module: ' + $command.Module)
-            Write-Verbose ('Command module name: ' + $command.ModuleName)
-
             $newRegisteredCommands += [PSCustomObject] @{
-                Module = $command.Module.Name
+                Module = $command.ModuleName
                 Name = $command.Name
                 Category = $Category
                 Frequency = $Frequency
