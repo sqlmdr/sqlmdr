@@ -1,7 +1,8 @@
 $requiredModules = @(
     'Pester',
     'PSFramework',
-    'dbatools'
+    'dbatools',
+    'PSScriptAnalyzer'
 )
 
 foreach ($requiredModule in $requiredModules) {

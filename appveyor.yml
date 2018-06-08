@@ -9,13 +9,13 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMGE: Visual Studio 2015
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
-      APPVEYOR_RDP_PASSWORD: Pa55w0rd!
+      #APPVEYOR_RDP_PASSWORD: Pa55w0rd!
 
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#on_finish:
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 cache:
   - C:\Program Files\WindowsPowerShell\Modules\PSScriptAnalyzer -> appveyor.yml
@@ -25,8 +25,8 @@ cache:
 
 test_script:
 # Test with native PS version
-  - ps: . .\Tests\appveyor.pester.ps1
-# Test with PS version 3
-  - ps: powershell.exe -executionpolicy bypass -noprofile -file .\Tests\appveyor.pester.ps1
+  - ps: Invoke-Command -FilePath '.\Tests\appveyor.pester.ps1'
+# This works...
+#  - ps: powershell.exe -executionpolicy bypass -noprofile -file .\Tests\appveyor.pester.ps1
 # Finalize pass - collect and upload results
   - ps: . .\Tests\appveyor.pester.ps1 -Finalize
