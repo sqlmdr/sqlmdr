@@ -1,10 +1,12 @@
 Mock -CommandName 'Get-PSFConfig' {
-    Write-Verbose ('Mock Get-PSFConfig called')
+    Write-Verbose ('Mock Get-PSFConfig called with params ' + ($PSBoundParameters -join ', '))
 
     if (-not $global:PesterPSFConfig -or $global:PesterPSFConfig -eq $null) {
+        Write-Verbose 'PesterPSFConfig was not set. Initializing to blank hashtable.'
         $global:PesterPSFConfig = @{}
     }
 
+    Write-Verbose ("Returning $FullName")
     return $global:PesterPSFConfig[$FullName]
 }
 
