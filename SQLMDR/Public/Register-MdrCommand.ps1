@@ -63,7 +63,7 @@ function Register-MdrCommand {
                 $enabled = $true
             }
 
-            $command | fl *
+            $command | gm
             Write-Verbose ('Command module: ' + $command.Module)
             Write-Verbose ('Command module name: ' + $command.Module.Name)
 
