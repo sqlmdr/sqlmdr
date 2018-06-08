@@ -22,7 +22,7 @@ Mock -CommandName 'Set-PSFConfig' {
 }
 
 function Reset-MockCommands {
-    $mockCommands = Import-PowerShellDataFile -Path .\MockCommands.psd1
+    $mockCommands = Import-PowerShellDataFile -Path .\Tests\MockCommands.psd1
     $commands = @()
     foreach ($command in $mockCommands.Commands.GetEnumerator()) {
         $commands += [PSCustomObject] $command
