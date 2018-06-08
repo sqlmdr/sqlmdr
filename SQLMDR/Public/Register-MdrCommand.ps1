@@ -63,6 +63,9 @@ function Register-MdrCommand {
                 $enabled = $true
             }
 
+            Write-Verbose ('Command module: ' + $command.Module)
+            Write-Verbose ('Command module name: ' + $command.Module.Name)
+
             $newRegisteredCommands += [PSCustomObject] @{
                 Module = $command.Module.Name
                 Name = $command.Name
