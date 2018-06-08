@@ -9,7 +9,7 @@ foreach ($requiredModule in $requiredModules) {
     $module = Get-Module -Name $requiredModule -ListAvailable
     if (-not $module) {
         Write-Host -Object "Install $requiredModule" -ForegroundColor DarkGreen
-        Install-Module -Name $requiredModule -Repository PSGallery -Scope CurrentUser -Confirm -Force | Out-Null
+        Install-Module -Name $requiredModule -Repository PSGallery -Scope CurrentUser -Confirm:$false -Force | Out-Null
     } else {
         Write-Host -Object "$requiredModule is cached" -ForegroundColor DarkGreen
         Import-Module -Name $requiredModule -Force
