@@ -17,7 +17,7 @@ Describe 'Register-MdrCommand Tests' {
 
             $registeredCommands = Get-PSFConfig -FullName 'sqlmdr.commands'
             Assert-MockCalled -CommandName 'Get-PSFConfig'
-            Write-Verbose $registeredCommands.GetType()
+            Write-Verbose $registeredCommands | gm
             $registeredCommands = $registeredCommands.Value | Where-Object {
                 $_.Module -eq $moduleName -and
                 $_.Category -eq 'Server' -and
