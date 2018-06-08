@@ -1,6 +1,6 @@
 try {
     Write-Host -Object "Install NuGet Provider" -ForegroundColor DarkGreen
-    Install-PackageProvider NuGet -Scope CurrentUser -Force
+    Install-PackageProvider NuGet -Scope CurrentUser -Force | Out-Null
 }
 catch {
     Write-Error "Failed to install NuGet - $_"
