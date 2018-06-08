@@ -1,3 +1,5 @@
+Install-PackageProvider NuGet -Force
+
 $requiredModules = @(
     'Pester',
     'PSFramework',
