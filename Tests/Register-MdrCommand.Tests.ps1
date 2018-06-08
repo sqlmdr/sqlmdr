@@ -5,8 +5,7 @@ Describe 'Register-MdrCommand Tests' {
         . "$PSScriptRoot\Mocks.ps1"
 
         It 'Registers by module' {
-            $VerbosePreference = 'Continue'
-            $global:PesterPSFConfig = $null
+            $script:PesterPSFConfig = $null
 
             $moduleName = 'Microsoft.PowerShell.Management'
             $commands = Get-Command -Module $moduleName
