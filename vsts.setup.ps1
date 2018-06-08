@@ -1,4 +1,4 @@
-Install-PackageProvider NuGet -Force
+Install-PackageProvider NuGet -Scope CurrentUser -Force
 
 $requiredModules = @(
     'Pester',
