@@ -1,24 +1,24 @@
 Mock -CommandName 'Get-PSFConfig' {
-    if (-not $script:PesterPSFConfig -or $script:PesterPSFConfig -eq $null) {
-        $script:PesterPSFConfig = @{}
+    if (-not $global:PesterPSFConfig -or $global:PesterPSFConfig -eq $null) {
+        $global:PesterPSFConfig = @{}
     }
 
-    return $script:PesterPSFConfig[$FullName]
+    return $global:PesterPSFConfig[$FullName]
 }
 
 Mock -CommandName 'Set-PSFConfig' {
-    if (-not $script:PesterPSFConfig) {
-        $script:PesterPSFConfig = @{}
+    if (-not $global:PesterPSFConfig) {
+        $global:PesterPSFConfig = @{}
     }
 
-    if (-not $script:PesterPSFConfig.ContainsKey($FullName)) {
-        $script:PesterPSFConfig[$FullName] = [PSCustomObject] @{
+    if (-not $global:PesterPSFConfig.ContainsKey($FullName)) {
+        $global:PesterPSFConfig[$FullName] = [PSCustomObject] @{
             FullName = $FullName
             Value = @()
         }
     }
 
-    $script:PesterPSFConfig[$FullName].Value = $Value
+    $global:PesterPSFConfig[$FullName].Value = $Value
 }
 
 function Reset-MockCommands {
