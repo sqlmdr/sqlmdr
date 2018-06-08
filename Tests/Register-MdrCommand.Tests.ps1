@@ -6,7 +6,7 @@ Describe 'Register-MdrCommand Tests' {
 
         It 'Registers by module' {
             $VerbosePreference = 'Continue'
-            $script:PesterPSFConfig = $null
+            $global:PesterPSFConfig = $null
 
             $moduleName = 'Microsoft.PowerShell.Management'
             $commands = Get-Command -Module $moduleName
@@ -17,7 +17,6 @@ Describe 'Register-MdrCommand Tests' {
 
             $registeredCommands = Get-PSFConfig -FullName 'sqlmdr.commands'
             Assert-MockCalled -CommandName 'Get-PSFConfig'
-            $registeredCommands.Value | ft *
             $registeredCommands = $registeredCommands.Value | Where-Object {
                 $_.Module -eq $moduleName -and
                 $_.Category -eq 'Server' -and

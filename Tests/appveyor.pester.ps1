@@ -15,7 +15,8 @@ param([switch]$Finalize)
     $requiredModules = @(
         'Pester',
         'PSFramework',
-        'dbatools'
+        'dbatools',
+        'PSScriptAnalyzer'
     )
 
     foreach ($requiredModule in $requiredModules) {

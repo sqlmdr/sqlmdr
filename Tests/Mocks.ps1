@@ -1,4 +1,6 @@
 Mock -CommandName 'Get-PSFConfig' {
+    Write-Verbose ('Mock Get-PSFConfig called')
+
     if (-not $global:PesterPSFConfig -or $global:PesterPSFConfig -eq $null) {
         $global:PesterPSFConfig = @{}
     }
@@ -7,6 +9,8 @@ Mock -CommandName 'Get-PSFConfig' {
 }
 
 Mock -CommandName 'Set-PSFConfig' {
+    Write-Verbose ('Mock Set-PSFConfig called')
+
     if (-not $global:PesterPSFConfig) {
         $global:PesterPSFConfig = @{}
     }
@@ -22,6 +26,8 @@ Mock -CommandName 'Set-PSFConfig' {
 }
 
 function Reset-MockCommands {
+    Write-Verbose ('Reset-MockCommands called')
+
     $mockCommands = Import-PowerShellDataFile -Path .\Tests\MockCommands.psd1
     $commands = @()
     foreach ($command in $mockCommands.Commands.GetEnumerator()) {
