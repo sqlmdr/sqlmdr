@@ -8,7 +8,11 @@ Describe 'Get-MdrInstance Tests' {
             $command = Get-Command -Module 'SQLMDR' -Name 'Get-MdrInstance'
 
             It "Has a parameter for ComputerName" {
-                $command.Parameters.ContainsKey('ComputerName')
+                $command.Parameters.ContainsKey('ComputerName') | Should Be $true
+            }
+
+            It "Has a parameter for SqlInstance" {
+                $command.Parameters.ContainsKey('SqlInstance') | Should Be $true
             }
         }
 
@@ -100,6 +104,41 @@ Describe 'Get-MdrInstance Tests' {
                 $filteredFakeServers = $fakeServers | Where-Object { $_.Name -like ($computerName + '*') }
 
                 $instances = Get-MdrInstance -ComputerName $computerName
+                $instances.Count | Should Be $filteredFakeServers.Count
+                Assert-MockCalled -CommandName 'Get-DbaRegisteredServer' -Times 1
+            }
+
+            It "Filters by SqlInstance" {
+                $fakeServers = @(
+                    [PSCustomObject] @{
+                        Name = 'FakeServer1'
+                        ServerName = 'FakeServer1'
+                    },
+                    [PSCustomObject] @{
+                        Name = 'FakeServer2'
+                        ServerName = 'FakeServer2'
+                    },
+                    [PSCustomObject] @{
+                        Name = 'FakeServer3'
+                        ServerName = 'FakeServer3'
+                    },
+                    [PSCustomObject] @{
+                        Name = 'FakeServer3\FakeInstance2'
+                        ServerName = 'FakeServer3\FakeInstance2'
+                    }
+                )
+
+                Mock -CommandName 'Get-DbaRegisteredServer' { return $fakeServers }
+                Mock -CommandName 'Connect-DbaInstance' { return $true }
+
+                Set-MdrServerSource -SourceType 'CMS' -CmsServer 'FakeServer1'
+                Assert-MockCalled -CommandName 'Connect-DbaInstance' -Times 1
+                Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
+                $sqlInstance = 'FakeServer2'
+                $filteredFakeServers = $fakeServers | Where-Object { $_.Name -like ($sqlInstance + '*') }
+
+                $instances = Get-MdrInstance -SqlInstance $sqlInstance
                 $instances.Count | Should Be $filteredFakeServers.Count
                 Assert-MockCalled -CommandName 'Get-DbaRegisteredServer' -Times 1
             }

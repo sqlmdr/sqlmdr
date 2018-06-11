@@ -1,7 +1,11 @@
 function Get-MdrInstance {
     [CmdletBinding()]
     param (
-        [string] $ComputerName
+        [Parameter()]
+        [string] $ComputerName,
+
+        [Parameter()]
+        [string] $SqlInstance
     )
 
     $type = Get-PSFConfig -FullName 'sqlmdr.server.type'
@@ -51,6 +55,11 @@ function Get-MdrInstance {
     if ($PSBoundParameters.ContainsKey('ComputerName')) {
         Write-PSFMessage -Level 'Verbose' -Message "Filtering list of instances to ComputerName = $ComputerName"
         $instances = $instances | Where-Object { $_.ComputerName -eq $ComputerName }
+    }
+
+    if ($PSBoundParameters.ContainsKey('SqlInstance')) {
+        Write-PSFMessage -Level 'Verbose' -Message "Filtering list of instances to SqlInstance = $SqlInstance"
+        $instances = $instances | Where-Object { $_.SqlInstance -eq $SqlInstance }
     }
 
     return $instances
