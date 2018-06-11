@@ -1,9 +1,14 @@
 function Get-MdrInstance {
+    [CmdletBinding()]
+    param (
+        [string] $ComputerName
+    )
+
     $type = Get-PSFConfig -FullName 'sqlmdr.server.type'
     $source = Get-PSFConfig -FullName 'sqlmdr.server.source'
     Write-PSFMessage -Level 'Verbose' -Message "Getting instances from [$($type.Value)] $($source.Value)"
 
-    $servers = switch ($type.Value) {
+    $instances = switch ($type.Value) {
         'CSV' {
             $data = Get-Content -Path $source.Value
             foreach ($row in $data) {
@@ -24,8 +29,8 @@ function Get-MdrInstance {
         }
 
         'CMS' {
-            $registeredServers = Get-DbaRegisteredServer -SqlInstance $source.Value
-            foreach ($registeredServer in $registeredServers) {
+            $registeredinstances = Get-DbaRegisteredServer -SqlInstance $source.Value
+            foreach ($registeredServer in $registeredinstances) {
                 $temp = $registeredServer.ServerName.Split('\')
                 if ($temp.Count -gt 1) {
                     [PSCustomObject] @{
@@ -43,5 +48,10 @@ function Get-MdrInstance {
         }
     }
 
-    return $servers
+    if ($PSBoundParameters.ContainsKey('ComputerName')) {
+        Write-PSFMessage -Level 'Verbose' -Message "Filtering list of instances to ComputerName = $ComputerName"
+        $instances = $instances | Where-Object { $_.ComputerName -eq $ComputerName }
+    }
+
+    return $instances
 }

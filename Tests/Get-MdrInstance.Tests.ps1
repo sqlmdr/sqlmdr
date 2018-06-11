@@ -70,9 +70,38 @@ Describe 'Get-MdrInstance Tests' {
             }
 
             It "Filters by ComputerName" {
+                $fakeServers = @(
+                    [PSCustomObject] @{
+                        Name = 'FakeServer1'
+                        ServerName = 'FakeServer1'
+                    },
+                    [PSCustomObject] @{
+                        Name = 'FakeServer2'
+                        ServerName = 'FakeServer2'
+                    },
+                    [PSCustomObject] @{
+                        Name = 'FakeServer3'
+                        ServerName = 'FakeServer3'
+                    },
+                    [PSCustomObject] @{
+                        Name = 'FakeServer3\FakeInstance2'
+                        ServerName = 'FakeServer3\FakeInstance2'
+                    }
+                )
+
+                Mock -CommandName 'Get-DbaRegisteredServer' { return $fakeServers }
+                Mock -CommandName 'Connect-DbaInstance' { return $true }
+
+                Set-MdrServerSource -SourceType 'CMS' -CmsServer 'FakeServer1'
+                Assert-MockCalled -CommandName 'Connect-DbaInstance' -Times 1
+                Assert-MockCalled -CommandName 'Set-PSFConfig' -Times 1
+
                 $computerName = 'FakeServer3'
+                $filteredFakeServers = $fakeServers | Where-Object { $_.Name -like ($computerName + '*') }
+
                 $instances = Get-MdrInstance -ComputerName $computerName
-                $instances.Count | Should Be ($csv | Where { $_ -like ($computerName + '*') }).Count
+                $instances.Count | Should Be $filteredFakeServers.Count
+                Assert-MockCalled -CommandName 'Get-DbaRegisteredServer' -Times 1
             }
         }
     }
