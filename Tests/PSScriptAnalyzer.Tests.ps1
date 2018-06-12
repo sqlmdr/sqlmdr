@@ -13,7 +13,7 @@ Describe 'PSScriptAnalyzer' {
 	$scriptAnalyzerRules = Get-ScriptAnalyzerRule
 
 	forEach ($scriptModule in $scriptsModules) {
-		$fileName = $scriptModule.FullName.Replace($MyInvocation.MyCommand.Path, '')
+		$fileName = $scriptModule.FullName.Replace($pwd, '')
 
         Context "$fileName" {
             foreach ($rule in $scriptAnalyzerRules) {
