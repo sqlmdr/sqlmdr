@@ -1,4 +1,5 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingWriteHost", "", Justification="Helper script")]
+param()
 
 $requiredModules = @(
     'Pester',
