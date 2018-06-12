@@ -13,13 +13,15 @@ Describe 'PSScriptAnalyzer' {
 	$scriptAnalyzerRules = Get-ScriptAnalyzerRule
 
 	forEach ($scriptModule in $scriptsModules) {
+		$fileName = $scriptModule.Name.Replace($MyInvocation.MyCommand.Path, '')
+
 		switch -wildCard ($scriptModule) {
 			'*.psm1' { $typeTesting = 'Module' }
 			'*.ps1'  { $typeTesting = 'Script' }
 			'*.psd1' { $typeTesting = 'Manifest' }
 		}
 
-        Context "$scriptModule conforms to Script Analyzer Rules" {
+        Context "$fileName" {
             foreach ($rule in $scriptAnalyzerRules) {
                 It "$rule" {
                     (Invoke-ScriptAnalyzer -Path $scriptModule -IncludeRule $rule).Count | Should Be 0
