@@ -170,5 +170,9 @@ else
         if ($IncludeCoverage) {
             $codecovReport = Get-CodecovReport -Results $results -ModuleBase $ModuleBase
             $codecovReport | ConvertTo-Json -Depth 4 -Compress | Out-File -FilePath "$ProjectRoot\PesterResultsCoverage.json" -Encoding 'utf8'
+
+            Write-Host -Object "appveyor.post: Sending coverage data" -ForeGroundColor DarkGreen
+            Push-AppveyorArtifact "$ProjectRoot\PesterResultsCoverage.json" -FileName "PesterResultsCoverage"
+            codecov -f "$ProjectRoot\PesterResultsCoverage.json" --flag "ps,$($env:SCENARIO.toLower())" | Out-Null
         }
 }
