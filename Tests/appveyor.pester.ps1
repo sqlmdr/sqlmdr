@@ -173,5 +173,6 @@ else
 
             Write-Host -Object "appveyor.post: Sending coverage data" -ForeGroundColor DarkGreen
             Push-AppveyorArtifact "$ProjectRoot\PesterResultsCoverage.json" -FileName "PesterResultsCoverage"
+            codecov -f "$ProjectRoot\PesterResultsCoverage.json" | Out-Null
         }
 }
