@@ -28,7 +28,7 @@ function Get-CodecovReport($Results, $ModuleBase) {
     #needs correct casing to do the replace
     $ModuleBase = (Resolve-Path $ModuleBase).Path
     # things we wanna a report for (and later backfill if not tested)
-    $allfiles = Get-ChildItem -File -Path "$ModuleBase\internal\functions", "$ModuleBase\functions" -Filter '*.ps1'
+    $allfiles = Get-ChildItem -File -Path $ModuleBase -Filter '*.ps1'
 
     $missed = $results.CodeCoverage | Select-Object -ExpandProperty MissedCommands | Sort-Object -Property File, Line -Unique
     $hits = $results.CodeCoverage | Select-Object -ExpandProperty HitCommands | Sort-Object -Property File, Line -Unique
