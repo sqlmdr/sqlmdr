@@ -30,6 +30,7 @@ An example
 General notes
 #>
 function Set-MdrCommand {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "", Justification="Added tests, future implementation")]
     [CmdletBinding(DefaultParameterSetName = 'EnableCommand')]
     param (
         [Parameter()]

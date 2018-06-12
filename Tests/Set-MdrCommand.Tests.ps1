@@ -4,6 +4,16 @@ Describe 'Set-MdrCommand Tests' {
     InModuleScope -ModuleName 'SQLMDR' {
         . "$PSScriptRoot\Mocks.ps1"
 
+        Context "Command Usage" {
+            It "Supports WhatIf" {
+
+            }
+
+            It "Supports Force" {
+
+            }
+        }
+
         It "Prevents using enable and disable at the same time" {
             { Set-MdrCommand -Name 'ServerCommand1' -Category 'Database' -Enable -Disable } | Should Throw
         }
@@ -17,14 +27,14 @@ Describe 'Set-MdrCommand Tests' {
         }
 
         It "Errors when command isn't registered" {
-            Reset-MockCommands
+            Reset-MockCommand
 
             { Set-MdrCommand -Name 'Get-ChildItem' -Category 'Server' } | Should Throw 'Command not registered'
         }
 
         Context "Updates category" {
             It "By module" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $moduleName = 'Module1'
                 $categoryName = 'Database'
@@ -43,7 +53,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = 'ServerCommand1'
                 $categoryName = 'Database'
@@ -62,7 +72,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By array of names" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = @('ServerCommand1', 'ServerCommand2')
                 $categoryName = 'Database'
@@ -81,7 +91,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By module and name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $moduleName = 'Module1'
                 $commandName = 'ServerCommand1'
@@ -107,7 +117,7 @@ Describe 'Set-MdrCommand Tests' {
 
         Context "Updates frequency" {
             It "By module" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $moduleName = 'Module1'
                 $frequency = 'Monthly'
@@ -126,7 +136,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = 'ServerCommand1'
                 $frequency = 'Hourly'
@@ -145,7 +155,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By array of names" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = @('ServerCommand1', 'ServerCommand2')
                 $frequency = 'Monthly'
@@ -164,7 +174,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By module and name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $moduleName = 'Module1'
                 $commandName = 'ServerCommand1'
@@ -205,7 +215,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = 'DisabledCommand1'
 
@@ -222,7 +232,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By array of names" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = @('DisabledCommand1', 'DisabledCommand2')
 
@@ -239,7 +249,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By module and name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $moduleName = 'Module2'
                 $commandName = 'DisabledCommand1'
@@ -276,7 +286,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = 'ServerCommand1'
 
@@ -293,7 +303,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By array of names" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $commandName = @('ServerCommand1', 'ServerCommand2')
 
@@ -310,7 +320,7 @@ Describe 'Set-MdrCommand Tests' {
             }
 
             It "By module and name" {
-                Reset-MockCommands
+                Reset-MockCommand
 
                 $moduleName = 'Module1'
                 $commandName = 'ServerCommand1'
