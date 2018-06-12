@@ -13,13 +13,7 @@ Describe 'PSScriptAnalyzer' {
 	$scriptAnalyzerRules = Get-ScriptAnalyzerRule
 
 	forEach ($scriptModule in $scriptsModules) {
-		$fileName = $scriptModule.Name.Replace($MyInvocation.MyCommand.Path, '')
-
-		switch -wildCard ($scriptModule) {
-			'*.psm1' { $typeTesting = 'Module' }
-			'*.ps1'  { $typeTesting = 'Script' }
-			'*.psd1' { $typeTesting = 'Manifest' }
-		}
+		$fileName = $scriptModule.FullName.Replace($MyInvocation.MyCommand.Path, '')
 
         Context "$fileName" {
             foreach ($rule in $scriptAnalyzerRules) {
