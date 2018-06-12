@@ -1,4 +1,4 @@
-Invoke-MdrCommand {
+function Invoke-MdrCommand {
     [CmdletBinding()]
     param (
         [Parameter(ParameterSetName = 'Server')]
