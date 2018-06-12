@@ -1,12 +1,15 @@
 function Get-MdrDatabase {
     [CmdletBinding()]
     param (
+        [Parameter()]
         $ComputerName,
-        $SqlInstance,
-        $Database
+
+        [Parameter()]
+        $SqlInstance
     )
 
-    process {
+    $instances = Get-MdrInstance @PSBoundParameters
+    $databases = Get-DbaDatabase -SqlInstance $instances.SqlInstance
 
-    }
+    return $databases
 }
