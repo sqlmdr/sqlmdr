@@ -24,7 +24,8 @@ cache:
   - C:\Program Files\WindowsPowerShell\Modules\dbatools -> appveyor.yml
 
 test_script:
-# Test with native PS version
-  - ps: .\Tests\appveyor.pester.ps1 -CodeCoverage
-# Finalize pass - collect and upload results
-  - ps: . .\Tests\appveyor.pester.ps1 -Finalize
+  # Test with native PS version
+  - ps: .\Tests\appveyor.pester.ps1 -IncludeCoverage
+
+  # Results
+  - ps: . .\Tests\appveyor.pester.ps1 -Finalize -IncludeCoverage
