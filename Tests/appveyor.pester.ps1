@@ -75,6 +75,9 @@ function Get-CodecovReport($Results, $ModuleBase) {
     $newreport
 }
 
+Write-Host -Object "Install codecov" -ForegroundColor DarkGreen
+choco install codecov | Out-Null
+
 # install required modules
 $requiredModules = @(
     'Pester',
