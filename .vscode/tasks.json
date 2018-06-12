@@ -96,7 +96,7 @@
         {
             "label": "Test Current",
             "type": "shell",
-            "command": "Invoke-Pester -PesterOption @{IncludeVSCodeMarker=$true} -Script '${workspaceRoot}\\Tests\\${fileBasenameNoExtension}.Tests.ps1'",
+            "command": "$testFile = if ('${fileBasename}' -like '*.Tests.ps1') { '${fileBasename}' } else { '${fileBasenameNoExtension}.Tests.ps1' }; Invoke-Pester -PesterOption @{IncludeVSCodeMarker=$true} -Script ('${workspaceRoot}\\Tests\\' + $testFile)",
             "group": {
                 "kind": "test",
                 "isDefault": true
