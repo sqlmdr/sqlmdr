@@ -4,12 +4,12 @@ The **SQLMDR** ( SQL Server Management Data Repository) PowerShell module allows
 ## Branches
 
 ### master
-[![codecov](https://codecov.io/gh/awickham10/sqlmdr/branch/master/graph/badge.svg)](https://codecov.io/gh/awickham10/sqlmdr/branch/master)
-[![codecov](https://ci.appveyor.com/api/projects/status/s6olkkgwvbuqfm3s/branch/master?svg=true)](https://ci.appveyor.com/project/awickham10/sqlmdr/branch/master)
+[![codecov](https://codecov.io/gh/sqlmdr/sqlmdr/branch/master/graph/badge.svg)](https://codecov.io/gh/sqlmdr/sqlmdr/branch/master)
+[![codecov](https://ci.appveyor.com/api/projects/status/s6olkkgwvbuqfm3s/branch/master?svg=true)](https://ci.appveyor.com/project/sqlmdr/sqlmdr/branch/master)
 
 ### dev
-[![codecov](https://codecov.io/gh/awickham10/sqlmdr/branch/dev/graph/badge.svg)](https://codecov.io/gh/awickham10/sqlmdr/branch/dev)
-[![codecov](https://ci.appveyor.com/api/projects/status/s6olkkgwvbuqfm3s/branch/dev?svg=true)](https://ci.appveyor.com/project/awickham10/sqlmdr/branch/dev)
+[![codecov](https://codecov.io/gh/sqlmdr/sqlmdr/branch/dev/graph/badge.svg)](https://codecov.io/gh/sqlmdr/sqlmdr/branch/dev)
+[![codecov](https://ci.appveyor.com/api/projects/status/s6olkkgwvbuqfm3s/branch/dev?svg=true)](https://ci.appveyor.com/project/sqlmdr/sqlmdr/branch/dev)
 
 ## Functions
 * **Disable-MdrCommand** disables collection of a command.
