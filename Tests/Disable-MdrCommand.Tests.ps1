@@ -18,7 +18,7 @@ Describe 'Disable-MdrCommand Tests' {
         }
 
         It 'Disables by name' {
-            Reset-MockCommands
+            Reset-MockCommand
 
             $commandName = 'ServerCommand1'
 
@@ -35,7 +35,7 @@ Describe 'Disable-MdrCommand Tests' {
         }
 
         It 'Disables an array of names' {
-            Reset-MockCommands
+            Reset-MockCommand
 
             $commandName = @('ServerCommand1', 'ServerCommand2')
 
@@ -52,7 +52,7 @@ Describe 'Disable-MdrCommand Tests' {
         }
 
         It 'Disables by module and name' {
-            Reset-MockCommands
+            Reset-MockCommand
 
             $moduleName = 'Module1'
             $commandName = 'ServerCommand1'

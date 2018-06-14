@@ -1,4 +1,5 @@
 function Set-MdrServerSource {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "", Justification="Added tests, future implementation")]
     [CmdletBinding(DefaultParameterSetName = 'CMS')]
     param (
         [ValidateSet('CMS', 'CSV')]

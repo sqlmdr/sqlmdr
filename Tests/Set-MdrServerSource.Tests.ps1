@@ -61,6 +61,14 @@ Describe 'Set-MdrServerSource Tests' {
 
                 Assert-MockCalled -CommandName 'Test-Path' -Times 1
             }
+
+            It "Supports WhatIf" {
+
+            }
+
+            It "Supports Force" {
+
+            }
         }
 
         Context "Functionality" {

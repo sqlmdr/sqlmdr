@@ -20,7 +20,7 @@ Describe 'Enable-MdrCommand Tests' {
         }
 
         It 'Enables by name' {
-            Reset-MockCommands
+            Reset-MockCommand
 
             $commandName = 'DisabledCommand1'
 
@@ -37,7 +37,7 @@ Describe 'Enable-MdrCommand Tests' {
         }
 
         It 'Enables an array of names' {
-            Reset-MockCommands
+            Reset-MockCommand
 
             $commandName = @('DisabledCommand1', 'DisabledCommand2')
 
@@ -54,7 +54,7 @@ Describe 'Enable-MdrCommand Tests' {
         }
 
         It 'Enables by module and name' {
-            Reset-MockCommands
+            Reset-MockCommand
 
             $moduleName = 'Module2'
             $commandName = 'DisabledCommand1'

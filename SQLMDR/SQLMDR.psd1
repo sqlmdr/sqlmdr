@@ -72,16 +72,25 @@ RequiredModules = @(
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = '*'
+FunctionsToExport = @(
+    'Disable-MdrCommand',
+    'Enable-MdrCommand',
+    'Get-MdrCommand',
+    'Invoke-Mdr',
+    'Invoke-MdrCommand',
+    'Register-MdrCommand',
+    'Set-MdrCommand',
+    'Set-MdrServerSource'
+)
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = '*'
+#CmdletsToExport = '*'
 
 # Variables to export from this module
-VariablesToExport = '*'
+#VariablesToExport = '*'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = '*'
+#AliasesToExport = '*'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -123,5 +132,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
-

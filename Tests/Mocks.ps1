@@ -1,3 +1,7 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "", Justification="Mock functions")]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "", Justification="Mock functions")]
+param ()
+
 Mock -CommandName 'Get-PSFConfig' {
     if (-not $script:PesterPSFConfig -or $script:PesterPSFConfig -eq $null) {
         Write-Verbose 'PesterPSFConfig was not set. Initializing to blank hashtable.'
@@ -23,7 +27,7 @@ Mock -CommandName 'Set-PSFConfig' {
     $script:PesterPSFConfig[$FullName].Value = $Value
 }
 
-function Reset-MockCommands {
+function Reset-MockCommand {
     $mockCommands = Import-PowerShellDataFile -Path .\Tests\MockCommands.psd1
     $commands = @()
     foreach ($command in $mockCommands.Commands.GetEnumerator()) {
@@ -32,4 +36,4 @@ function Reset-MockCommands {
     Set-PSFConfig -FullName 'sqlmdr.commands' -Value $commands
 }
 
-Reset-MockCommands
+Reset-MockCommand

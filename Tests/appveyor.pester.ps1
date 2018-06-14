@@ -10,6 +10,7 @@ If Finalize is specified, we collect XML output, upload tests, and indicate buil
 Calculates coverage and sends it to codecov.io
 
 #>
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingWriteHost", "", Justification="Helper script")]
 param(
     [switch] $Finalize,
     [switch] $IncludeCoverage
